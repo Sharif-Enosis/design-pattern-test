@@ -9,7 +9,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Problems\" />
+    <Compile Remove="Problem 1\**" />
+    <Compile Remove="Problem 2\**" />
+    <Compile Remove="Problem 3\**" />
+    <Compile Remove="Problem 4\**" />
+    <Compile Remove="Problem 5\**" />
+    <Compile Remove="Problem 6\**" />
+    <Compile Remove="Problem 7\**" />
+    <Compile Remove="Problems\**" />
+    <EmbeddedResource Remove="Problem 1\**" />
+    <EmbeddedResource Remove="Problem 2\**" />
+    <EmbeddedResource Remove="Problem 3\**" />
+    <EmbeddedResource Remove="Problem 4\**" />
+    <EmbeddedResource Remove="Problem 5\**" />
+    <EmbeddedResource Remove="Problem 6\**" />
+    <EmbeddedResource Remove="Problem 7\**" />
+    <EmbeddedResource Remove="Problems\**" />
+    <None Remove="Problem 1\**" />
+    <None Remove="Problem 2\**" />
+    <None Remove="Problem 3\**" />
+    <None Remove="Problem 4\**" />
+    <None Remove="Problem 5\**" />
+    <None Remove="Problem 6\**" />
+    <None Remove="Problem 7\**" />
+    <None Remove="Problems\**" />
   </ItemGroup>
 
 </Project>

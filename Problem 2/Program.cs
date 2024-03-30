@@ -1,4 +1,4 @@
-namespace DesignPatterns
+﻿namespace DesignPatterns
 {
     class MainApp
     {
@@ -18,7 +18,7 @@ namespace DesignPatterns
             tool.UndoLastAction();
 
             tool.SetCommand(3);
-            tool.RunAction(); 
+            tool.RunAction();
             tool.UndoLastAction();
 
             Console.ReadKey();
@@ -36,6 +36,8 @@ public interface ITeklaDesignerTool
 public class TeklaDesignerTool : ITeklaDesignerTool
 {
     private IActionCommand _action;
+
+    Stack<IActionCommand> _actions = new Stack<IActionCommand>();
     private IUIObject _obj;
     ActionFactory actionFactory;
     public TeklaDesignerTool(IUIObject obj)
@@ -47,28 +49,30 @@ public class TeklaDesignerTool : ITeklaDesignerTool
     public void SetCommand(int commandOption)
     {
         _action = actionFactory.GetCommand(commandOption);
+        
     }
     public void RunAction()
     {
         _action.Execute(_obj);
-
+        _actions.Push(_action);
         Console.WriteLine("After applying action..");
         _obj.ShowCurrentState();
     }
 
     public void UndoLastAction()
     {
+        _action = _actions.Pop();
         _action.UnExecute(_obj);
 
         Console.WriteLine("After Undoing..");
         _obj.ShowCurrentState();
     }
-     
+
 }
 
 public interface IUIObject
 {
-    string ErrorMessage { get; set; }
+    string ErrorMessage { get; set; } 
     int TotalClick { get; set; }
     int TotalMoveOperations { get; set; }
     public void ShowCurrentState();
@@ -76,12 +80,12 @@ public interface IUIObject
 
 public class UIObject : IUIObject
 {
-    public string ErrorMessage { get; set; }
+    public string ErrorMessage { get; set; }  = "No message";
     public int TotalClick { get; set; } = 0;
-    public int TotalMoveOperations { get; set; } = 0; 
+    public int TotalMoveOperations { get; set; } = 0;
     public void ShowCurrentState()
-    { 
-        Console.WriteLine(" Total Click: "+ TotalClick);
+    {
+        Console.WriteLine(" Total Click: " + TotalClick);
         Console.WriteLine(" Total Move Operations: " + TotalMoveOperations);
         Console.WriteLine(" Error Message: " + ErrorMessage);
     }
@@ -118,12 +122,14 @@ public class ClickCommand : IActionCommand
     // Implement...
     public void Execute(IUIObject obj)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Clicked");
+        obj.TotalClick += 1;
     }
 
     public void UnExecute(IUIObject obj)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Unclicked");
+        obj.TotalClick -= 1;
     }
 }
 
@@ -132,12 +138,14 @@ public class MoveCommand : IActionCommand
     // Implement.....
     public void Execute(IUIObject obj)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Moved");
+        obj.TotalMoveOperations += 1;
     }
 
     public void UnExecute(IUIObject obj)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Unmoved");
+        obj.TotalMoveOperations -= 1;
     }
 }
 
@@ -146,11 +154,13 @@ public class UpdateErrorMessageCommand : IActionCommand
     // Implement.....
     public void Execute(IUIObject obj)
     {
-        throw new NotImplementedException();
+        obj.ErrorMessage = "Error Message Updated";
+        Console.WriteLine(obj.ErrorMessage);
     }
 
     public void UnExecute(IUIObject obj)
     {
-        throw new NotImplementedException();
+        obj.ErrorMessage = "Error Message Removed";
+        Console.WriteLine(obj.ErrorMessage);
     }
 }
